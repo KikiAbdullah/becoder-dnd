@@ -1,0 +1,23 @@
+{
+  "scenario_id": "tutorial_01",
+  "nodes": {
+    "node_001": {
+      "type": "narrative",
+      "text": "You enter a dark cave...",
+      "image": "cave.webp",
+      "auto_advance": 5000,
+      "next": "node_002"
+    },
+    "node_002": {
+      "type": "voting",
+      "text": "Which path will you take?",
+      "options": [
+        { "id": "opt_1", "text": "Left tunnel" },
+        { "id": "opt_2", "text": "Right tunnel" }
+      ],
+      "timeout": 30000,
+      "on_timeout": "opt_1"
+    }
+  },
+  "start_node": "node_001"
+}

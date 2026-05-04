@@ -1,0 +1,35 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "rooms": {
+      "$roomId": {
+        ".read": true,
+        "meta": {
+          ".write": "auth != null",
+          ".validate": "newData.hasChildren(['status'])"
+        },
+        "players": {
+          "$playerId": {
+            ".write": "auth != null && auth.uid == $playerId"
+          }
+        },
+        "votes": {
+          "$playerId": {
+            ".write": "auth != null && auth.uid == $playerId",
+            ".validate": "newData.isString()"
+          }
+        },
+        "dice": {
+          "$playerId": {
+            ".write": "auth != null && auth.uid == $playerId",
+            ".validate": "newData.hasChildren(['value', 'nonce'])"
+          }
+        },
+        "state": {
+          ".write": "auth != null"
+        }
+      }
+    }
+  }
+}

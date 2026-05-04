@@ -1,0 +1,192 @@
+{
+  "characters": [
+    {
+      "class_id": "warrior",
+      "class_name": "Warrior",
+      "description": "Prajurit tangguh dengan pertahanan tinggi dan serangan kuat.",
+      "base_stats": {
+        "hp": 12,
+        "armor_class": 15,
+        "initiative_modifier": 0
+      },
+      "ability_scores": {
+        "strength": 15,
+        "dexterity": 10,
+        "constitution": 14,
+        "intelligence": 8,
+        "wisdom": 11,
+        "charisma": 10
+      },
+      "modifiers": {
+        "str_mod": 2,
+        "dex_mod": 0,
+        "con_mod": 2,
+        "int_mod": -1,
+        "wis_mod": 0,
+        "cha_mod": 0
+      },
+      "proficiencies": {
+        "skills": ["Athletics", "Intimidation"],
+        "saving_throws": ["Strength", "Constitution"],
+        "weapons": ["Sword", "Shield", "Bow"]
+      },
+      "abilities": [
+        {
+          "id": "ability_1",
+          "name": "Second Wind",
+          "description": "Pulih 1d10 + level HP (sekali per Short Rest).",
+          "recharge": "short_rest"
+        },
+        {
+          "id": "ability_2",
+          "name": "Action Surge",
+          "description": "Dapatkan aksi tambahan dalam giliran (sekali per Long Rest).",
+          "recharge": "long_rest"
+        }
+      ],
+      "color": "#c41e3a",
+      "icon": "warrior_icon.webp"
+    },
+    {
+      "class_id": "mage",
+      "class_name": "Mage",
+      "description": "Penyihir cerdas dengan serangan sihir jarak jauh dan kontrol medan.",
+      "base_stats": {
+        "hp": 6,
+        "armor_class": 12,
+        "initiative_modifier": 1
+      },
+      "ability_scores": {
+        "strength": 8,
+        "dexterity": 12,
+        "constitution": 10,
+        "intelligence": 16,
+        "wisdom": 12,
+        "charisma": 10
+      },
+      "modifiers": {
+        "str_mod": -1,
+        "dex_mod": 1,
+        "con_mod": 0,
+        "int_mod": 3,
+        "wis_mod": 1,
+        "cha_mod": 0
+      },
+      "proficiencies": {
+        "skills": ["Arcana", "Investigation"],
+        "saving_throws": ["Intelligence", "Wisdom"],
+        "weapons": ["Dagger", "Staff"]
+      },
+      "abilities": [
+        {
+          "id": "ability_1",
+          "name": "Fireball",
+          "description": "Lempar bola api ke area luas (DC 15 DEX Save untuk setengah damage).",
+          "recharge": "long_rest"
+        },
+        {
+          "id": "ability_2",
+          "name": "Magic Missile",
+          "description": "Serang dengan 3 proyektil sihir yang tidak dapat dihindari.",
+          "recharge": "at_will"
+        }
+      ],
+      "color": "#4169e1",
+      "icon": "mage_icon.webp"
+    },
+    {
+      "class_id": "rogue",
+      "class_name": "Rogue",
+      "description": "Pencuri gesit dengan keahlian tersembunyi dan serangan presisi.",
+      "base_stats": {
+        "hp": 8,
+        "armor_class": 14,
+        "initiative_modifier": 3
+      },
+      "ability_scores": {
+        "strength": 10,
+        "dexterity": 16,
+        "constitution": 10,
+        "intelligence": 14,
+        "wisdom": 10,
+        "charisma": 12
+      },
+      "modifiers": {
+        "str_mod": 0,
+        "dex_mod": 3,
+        "con_mod": 0,
+        "int_mod": 2,
+        "wis_mod": 0,
+        "cha_mod": 1
+      },
+      "proficiencies": {
+        "skills": ["Stealth", "Sleight of Hand", "Perception"],
+        "saving_throws": ["Dexterity", "Intelligence"],
+        "weapons": ["Dagger", "Shortsword", "Bow"]
+      },
+      "abilities": [
+        {
+          "id": "ability_1",
+          "name": "Sneak Attack",
+          "description": "Serangan dari tersembunyi atau dengan bantuan alat. Tambah 2d6 damage.",
+          "recharge": "at_will"
+        },
+        {
+          "id": "ability_2",
+          "name": "Evasion",
+          "description": "Jika berhasil DEX Save, tidak menerima damage apapun (bukan setengah).",
+          "recharge": "at_will"
+        }
+      ],
+      "color": "#2f4f4f",
+      "icon": "rogue_icon.webp"
+    },
+    {
+      "class_id": "cleric",
+      "class_name": "Cleric",
+      "description": "Pendeta berkah dengan kemampuan healing dan proteksi.",
+      "base_stats": {
+        "hp": 8,
+        "armor_class": 16,
+        "initiative_modifier": 0
+      },
+      "ability_scores": {
+        "strength": 10,
+        "dexterity": 10,
+        "constitution": 12,
+        "intelligence": 10,
+        "wisdom": 16,
+        "charisma": 13
+      },
+      "modifiers": {
+        "str_mod": 0,
+        "dex_mod": 0,
+        "con_mod": 1,
+        "int_mod": 0,
+        "wis_mod": 3,
+        "cha_mod": 1
+      },
+      "proficiencies": {
+        "skills": ["Medicine", "Insight", "Religion"],
+        "saving_throws": ["Wisdom", "Charisma"],
+        "weapons": ["Mace", "Crossbow", "Holy Symbol"]
+      },
+      "abilities": [
+        {
+          "id": "ability_1",
+          "name": "Healing Word",
+          "description": "Pulih satu target yang terlihat dalam jarak 60 ft sebesar 1d4 + WIS mod.",
+          "recharge": "long_rest"
+        },
+        {
+          "id": "ability_2",
+          "name": "Turn Undead",
+          "description": "Undead harus membuat WIS Save atau tertarik ke arah lain selama 1 menit.",
+          "recharge": "long_rest"
+        }
+      ],
+      "color": "#ffd700",
+      "icon": "cleric_icon.webp"
+    }
+  ]
+}
