@@ -4,8 +4,8 @@ import { Heart } from 'lucide-react';
 import { useGame } from '../../../hooks/useGame';
 import { loadScenario, getNode } from '../../../services/engine/scenario';
 import { runResolverTick } from '../../../services/engine/resolver';
-import { Scenario, GameNode, PlayerData } from '../../../types/game';
-import { transitionNode, setPhase } from '../../../services/firebase/database';
+import { Scenario, GameNode } from '../../../types/game';
+import { setPhase } from '../../../services/firebase/database';
 
 export default function TVScreen() {
   const store = useGame();

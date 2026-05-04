@@ -9,7 +9,7 @@ import {
   DataSnapshot
 } from 'firebase/database';
 import { db } from './config';
-import { RoomData, PlayerData } from '../types/game';
+import { RoomData, PlayerData } from '../../types/game';
 
 // Room Operations
 export async function createRoom(scenario_id: string): Promise<string> {

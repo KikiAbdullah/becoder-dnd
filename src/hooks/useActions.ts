@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { submitVote as fbSubmitVote } from '../services/firebase/database';
 import { submitDiceRoll as fbSubmitDice } from '../services/firebase/database';
-import { runResolverTick } from '../services/engine/resolver';
 import { rollD20 } from '../utils/helpers';
 
 export function useActions() {

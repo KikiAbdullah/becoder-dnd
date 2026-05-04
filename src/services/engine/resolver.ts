@@ -1,5 +1,5 @@
 import { RoomData, GameNode, PlayerData } from '../../types/game';
-import { transitionNode, setPhase, updateRoomState } from '../firebase/database';
+import { transitionNode, updateRoomState } from '../firebase/database';
 
 export function resolveVoting(
   votes: Record<string, string>,

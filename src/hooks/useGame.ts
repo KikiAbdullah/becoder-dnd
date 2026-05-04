@@ -8,7 +8,7 @@ import {
   subscribeToRoom 
 } from '../services/firebase/database';
 import { buildPlayerData } from '../services/game/character';
-import { generatePlayerId, generateRoomPin } from '../utils/helpers';
+import { generatePlayerId } from '../utils/helpers';
 import { CharacterId } from '../types/game';
 
 export function useGame() {

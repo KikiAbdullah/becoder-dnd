@@ -5,7 +5,7 @@ import { useGame } from '../../hooks/useGame';
 import { updateRoomState } from '../../services/firebase/database';
 
 export default function TVLobby() {
-  const { hostCreateRoom, roomId, status, players, isLoading, error } = useGame();
+  const { hostCreateRoom, roomId, players, isLoading, error } = useGame();
   const [started, setStarted] = useState(false);
 
   const playerList = Object.values(players);
