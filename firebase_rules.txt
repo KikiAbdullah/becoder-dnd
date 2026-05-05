@@ -1,33 +1,27 @@
 {
   "rules": {
-    ".read": false,
-    ".write": false,
     "rooms": {
       "$roomId": {
-        ".read": true,
-        "meta": {
-          ".write": "auth != null",
-          ".validate": "newData.hasChildren(['status'])"
-        },
+        // Izinkan baca untuk siapa saja yang tahu roomId (PIN)
+        ".read": "true",
+        // Izinkan tulis jika user sudah login (Anonymous/Google)
+        ".write": "auth != null",
+        
         "players": {
           "$playerId": {
+            // Hanya user bersangkutan yang bisa edit datanya sendiri
             ".write": "auth != null && auth.uid == $playerId"
           }
         },
         "votes": {
           "$playerId": {
-            ".write": "auth != null && auth.uid == $playerId",
-            ".validate": "newData.isString()"
+            ".write": "auth != null && auth.uid == $playerId"
           }
         },
         "dice": {
           "$playerId": {
-            ".write": "auth != null && auth.uid == $playerId",
-            ".validate": "newData.hasChildren(['value', 'nonce'])"
+            ".write": "auth != null && auth.uid == $playerId"
           }
-        },
-        "state": {
-          ".write": "auth != null"
         }
       }
     }

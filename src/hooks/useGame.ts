@@ -43,7 +43,7 @@ export function useGame() {
     return unsub;
   }, [store.roomId]);
 
-  const hostCreateRoom = useCallback(async (scenarioId: string = 'tutorial_01') => {
+  const hostCreateRoom = useCallback(async (scenarioId: string = 'chapter_01_escape') => {
     store.setLoading(true);
     store.setError(null);
     try {

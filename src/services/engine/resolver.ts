@@ -36,7 +36,18 @@ export function allPlayersVoted(
   const activePlayers = Object.keys(players).filter(
     (id) => players[id].status === 'active'
   );
+  if (activePlayers.length === 0) return false;
   return activePlayers.every((id) => votes[id] !== undefined);
+}
+
+export function getAfkPlayers(
+  actions: Record<string, any>,
+  players: Record<string, PlayerData>
+): string[] {
+  const activePlayers = Object.keys(players).filter(
+    (id) => players[id].status === 'active'
+  );
+  return activePlayers.filter((id) => actions[id] === undefined);
 }
 
 export function allPlayersRolled(
@@ -46,6 +57,7 @@ export function allPlayersRolled(
   const activePlayers = Object.keys(players).filter(
     (id) => players[id].status === 'active'
   );
+  if (activePlayers.length === 0) return false;
   return activePlayers.every((id) => dice[id] !== undefined);
 }
 
@@ -59,17 +71,24 @@ export async function runResolverTick(
 
   if (state.phase === 'voting') {
     const options = currentNode.options?.map((o) => o.id) ?? [];
-    
-    const hasTimeout = currentNode.timeout && currentNode.on_timeout;
     const allVoted = allPlayersVoted(votes, players);
     
-    if (!allVoted && !hasTimeout) return;
+    const activePlayerCount = Object.values(players).filter(p => p.status === 'active').length;
+    const afkPlayers = getAfkPlayers(votes, players);
+    const hasTimeout = currentNode.timeout && currentNode.on_timeout;
+
+    // Timeout logic:
+    // Jika ada timeout dan belum semua vote, tapi waktu habis (ditangani timer eksternal),
+    // atau jika resolver ini dipanggil PAKSA karena timeout (kita butuh flag khusus dari TV)
+    // Untuk sekarang, karena TVScreen.tsx tidak punya flag 'forceResolve', kita asumsikan
+    // timeout di-handle langsung oleh TVScreen dengan memanggil setPhase/transitionNode.
+    // Jadi di sini kita fokus pada 'semua sudah vote'.
+
+    if (!allVoted) return;
 
     await updateRoomState(roomId, { is_resolving: true });
 
-    const winner = allVoted
-      ? resolveVoting(votes, options)
-      : currentNode.on_timeout!;
+    const winner = resolveVoting(votes, options);
 
     await transitionNode(roomId, winner);
     await updateRoomState(roomId, { is_resolving: false });

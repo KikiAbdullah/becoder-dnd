@@ -13,11 +13,17 @@ import { RoomData, PlayerData } from '../../types/game';
 
 // Room Operations
 export async function createRoom(scenario_id: string): Promise<string> {
-  const roomsRef = ref(db, 'rooms');
-  const newRoomRef = push(roomsRef);
+  const pin = String(Math.floor(1000 + Math.random() * 9000));
+  const roomRef = ref(db, `rooms/${pin}`);
+  
+  // Cek apakah PIN sudah terpakai
+  const snapshot = await get(roomRef);
+  if (snapshot.exists()) {
+    return createRoom(scenario_id); // Rekursi jika PIN bentrok
+  }
   
   const roomData: RoomData = {
-    roomId: newRoomRef.key || '',
+    roomId: pin,
     meta: {
       created_at: Date.now(),
       status: 'waiting',
@@ -34,8 +40,8 @@ export async function createRoom(scenario_id: string): Promise<string> {
     dice: {}
   };
   
-  await set(newRoomRef, roomData);
-  return newRoomRef.key || '';
+  await set(roomRef, roomData);
+  return pin;
 }
 
 export async function getRoomData(roomId: string): Promise<RoomData | null> {
@@ -123,6 +129,15 @@ export async function updateRoomState(
 ): Promise<void> {
   const stateRef = ref(db, `rooms/${roomId}/state`);
   await update(stateRef, updates);
+}
+
+export async function updatePlayerStatus(
+  roomId: string,
+  playerId: string,
+  status: 'active' | 'downed' | 'dead' | 'afk'
+): Promise<void> {
+  const statusRef = ref(db, `rooms/${roomId}/players/${playerId}/status`);
+  await set(statusRef, status);
 }
 
 export async function transitionNode(

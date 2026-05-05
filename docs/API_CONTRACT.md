@@ -51,7 +51,7 @@ interface PlayerData {
   ├─ meta
   │  ├─ created_at: timestamp
   │  ├─ status: "waiting" | "playing" | "ended"
-  │  └─ scenario_id: "tutorial_01"
+  │  └─ scenario_id: "chapter_01_escape"
   ├─ state
   │  ├─ current_node: "node_002"
   │  ├─ phase: "voting"

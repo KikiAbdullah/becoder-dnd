@@ -11,6 +11,7 @@ interface GameState {
   roomId: string | null;
   roomPin: string | null;
   status: RoomStatus;
+  scenario_version: string | null;
   
   // Local Player
   playerId: string | null;
@@ -43,6 +44,7 @@ export const useGameStore = create<GameState>((set) => ({
   roomId: null,
   roomPin: null,
   status: 'waiting',
+  scenario_version: null,
   
   playerId: null,
   playerName: null,
@@ -68,6 +70,7 @@ export const useGameStore = create<GameState>((set) => ({
   
   updateFromFirebase: (data) => set((state) => ({
     status: data.meta?.status ?? state.status,
+    scenario_version: data.meta?.scenario_version ?? state.scenario_version,
     currentNode: data.state?.current_node ?? state.currentNode,
     phase: data.state?.phase ?? state.phase,
     players: data.players ?? state.players,
@@ -86,6 +89,7 @@ export const useGameStore = create<GameState>((set) => ({
     roomId: null,
     roomPin: null,
     status: 'waiting',
+    scenario_version: null,
     playerId: null,
     playerName: null,
     playerClass: null,

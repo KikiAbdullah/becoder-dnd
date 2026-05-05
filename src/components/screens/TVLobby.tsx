@@ -49,7 +49,7 @@ export default function TVLobby() {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => hostCreateRoom('tutorial_01')}
+          onClick={() => hostCreateRoom('valdris/chapter_01_escape')}
           disabled={isLoading}
           className="flex items-center gap-3 px-10 py-4 bg-blue-600 hover:bg-blue-500 
             disabled:opacity-50 text-white rounded-xl font-semibold text-lg transition-colors"
