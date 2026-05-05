@@ -1,30 +1,88 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Tv, Plus, Users, Loader2, AlertCircle } from 'lucide-react';
+import { Tv, Plus, Users, Loader2, AlertCircle, PlayCircle } from 'lucide-react';
 import { useGame } from '../../hooks/useGame';
 import { updateRoomState } from '../../services/firebase/database';
 
 export default function TVLobby() {
   const { hostCreateRoom, roomId, players, isLoading, error } = useGame();
   const [started, setStarted] = useState(false);
+  const [selectedChapter, setSelectedChapter] = useState('valdris/chapter_01_escape');
 
   const playerList = Object.values(players);
+
+  const CHAPTERS = [
+    { id: 'valdris/chapter_01_escape', title: 'Chapter 1: Malam di Valdris', desc: 'Pelarian The Pale Hand' },
+    { id: 'valdris/chapter_02_shadows', title: 'Chapter 2: Bayangan Xalthor', desc: 'Reruntuhan misterius' },
+    { id: 'valdris/chapter_03_true_hand', title: 'Chapter 3: Sang Jenderal', desc: 'Pertarungan Final' }
+  ];
 
   async function handleStart() {
     if (!roomId) return;
     setStarted(true);
     await updateRoomState(roomId, {
       phase: 'idle',
-      current_node: 'node_001',
+      current_node: 'node_001_intro', // Sesuaikan node awal semua chapter
       is_resolving: false,
       animation_done: false
     });
-    await updateRoomState(roomId.replace('/state', '') + '', {});
-    // update meta status
     const { ref, update } = await import('firebase/database');
     const { db } = await import('../../services/firebase/config');
     await update(ref(db, `rooms/${roomId}/meta`), { status: 'playing' });
   }
+
+  if (!roomId) {
+    return (
+      <div className="tv-mode flex flex-col items-center justify-center bg-[#0d0d0d] gap-8 p-8">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center"
+        >
+          <Tv size={64} className="text-blue-400 mx-auto mb-4" />
+          <h1 className="font-serif text-5xl text-white mb-2">Pilih Petualangan</h1>
+          <p className="text-gray-400">Pilih chapter skenario untuk memulai sesi</p>
+        </motion.div>
+
+        <div className="flex flex-col gap-4 w-full max-w-lg">
+          {CHAPTERS.map(ch => (
+            <div 
+              key={ch.id}
+              onClick={() => setSelectedChapter(ch.id)}
+              className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                selectedChapter === ch.id 
+                ? 'bg-blue-900/30 border-blue-500' 
+                : 'bg-[#111] border-[#222] hover:border-gray-500'
+              }`}
+            >
+              <h3 className="text-white font-bold text-lg">{ch.title}</h3>
+              <p className="text-gray-400 text-sm">{ch.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        {error && (
+          <div className="flex items-center gap-2 text-red-400 bg-red-900/20 px-4 py-2 rounded-lg border border-red-500/30">
+            <AlertCircle size={16} />
+            <span className="text-sm">{error}</span>
+          </div>
+        )}
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => hostCreateRoom(selectedChapter)}
+          disabled={isLoading}
+          className="flex items-center gap-3 px-10 py-4 bg-green-600 hover:bg-green-500 
+            disabled:opacity-50 text-white rounded-xl font-bold text-lg transition-all shadow-lg"
+        >
+          {isLoading ? <Loader2 size={20} className="animate-spin" /> : <PlayCircle size={20} />}
+          {isLoading ? 'Mempersiapkan...' : 'Buka Room (Dapatkan PIN)'}
+        </motion.button>
+      </div>
+    );
+  }
+
 
   if (!roomId) {
     return (

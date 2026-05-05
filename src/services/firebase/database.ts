@@ -2,7 +2,6 @@ import {
   ref, 
   set, 
   get, 
-  push, 
   update, 
   remove,
   onValue,
@@ -144,17 +143,19 @@ export async function transitionNode(
   roomId: string,
   nextNodeId: string
 ): Promise<void> {
-  await updateRoomState(roomId, {
-    current_node: nextNodeId,
-    phase: 'idle'
-  });
+  const roomRef = ref(db, `rooms/${roomId}`);
   
-  // Clear votes and dice for new phase
-  const votesRef = ref(db, `rooms/${roomId}/votes`);
-  const diceRef = ref(db, `rooms/${roomId}/dice`);
+  // Gunakan satu update tunggal untuk atomisitas total
+  // null menghapus path tersebut di Firebase Realtime Database
+  const updates = {
+    'state/current_node': nextNodeId,
+    'state/phase': 'idle',
+    'state/is_resolving': false,
+    'votes': null,
+    'dice': null
+  };
   
-  await set(votesRef, {});
-  await set(diceRef, {});
+  await update(roomRef, updates);
 }
 
 export async function setPhase(

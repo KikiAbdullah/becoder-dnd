@@ -1,0 +1,396 @@
+{
+  "scenario_id": "chapter_02_shadows",
+  "start_node": "node_001_intro",
+  "nodes": {
+    "node_001_intro": {
+      "type": "narrative",
+      "text": "Beberapa hari setelah insiden Hutan Kelam, Valdris tampak tenang di permukaan. Tapi dinding kota dipenuhi simbol tangan pucat, dan para informan kerajaan melaporkan pergerakan mencurigakan menuju utara. Sesuatu sedang dibangun dalam bayangan.",
+      "image": "bg_city_dawn.webp",
+      "auto_advance": 8000,
+      "next": "node_002_choice"
+    },
+    "node_002_choice": {
+      "type": "voting",
+      "text": "Raja menawarkan bantuan pasukan, tapi waktu sempit. Jika kalian salah memilih langkah, jaringan The Pale Hand bisa menghilang lagi. Jalur mana yang diambil party?",
+      "image": "bg_castle_interior.webp",
+      "timeout": 30000,
+      "on_timeout": "node_003_loyal_route",
+      "options": [
+        { "id": "node_003_loyal_route", "text": "Bekerja bersama istana dan dewan perang" },
+        { "id": "node_003_underworld_route", "text": "Masuk ke jaringan pasar gelap" },
+        { "id": "node_003_cult_route", "text": "Ikuti jejak simbol kultus" }
+      ]
+    },
+
+    "node_003_loyal_route": {
+      "type": "narrative",
+      "text": "Di ruang strategi kerajaan, peta Valdris dibentangkan. Para bangsawan dan komandan saling tuding. Tak semua orang di ruangan ini bisa dipercaya, tapi arsip militer mungkin menyimpan petunjuk penting.",
+      "image": "bg_castle_interior.webp",
+      "auto_advance": 7000,
+      "next": "node_004_loyal_check"
+    },
+    "node_004_loyal_check": {
+      "type": "dice_check",
+      "text": "Kalian harus meyakinkan dewan perang agar membuka arsip level rahasia. Ini bukan hanya soal logika, tapi juga otoritas dan keberanian bicara.",
+      "image": "bg_negotiation.webp",
+      "difficulty": 14,
+      "required_ability": "charisma",
+      "on_success": "node_005_loyal_success",
+      "on_fail": "node_005_loyal_fail"
+    },
+    "node_005_loyal_success": {
+      "type": "narrative",
+      "text": "Arsip terbuka. Nama para tahanan, rute suplai gelap, dan transaksi besi-kristal mengarah ke reruntuhan kuno Xal'thor di pegunungan utara.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_006_loyal_side_choice"
+    },
+    "node_005_loyal_fail": {
+      "type": "narrative",
+      "text": "Dewan perang tidak sepenuhnya percaya pada kalian. Namun, dari percakapan yang dipotong dan peta yang setengah ditutup, kalian tetap menangkap cukup informasi untuk melacak jalur utara.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_006_loyal_side_choice"
+    },
+    "node_006_loyal_side_choice": {
+      "type": "voting",
+      "text": "Sebelum berangkat, kapten gudang memberi tahu ada peti perlengkapan lama dari pengawal elit di ruang senjata bawah. Waktu mepet. Ambil atau langsung pergi?",
+      "image": "bg_castle_interior.webp",
+      "timeout": 25000,
+      "on_timeout": "node_020_merge_north",
+      "options": [
+        { "id": "node_006a_armory_loot", "text": "Periksa gudang senjata" },
+        { "id": "node_020_merge_north", "text": "Abaikan dan berangkat sekarang" }
+      ]
+    },
+    "node_006a_armory_loot": {
+      "type": "dice_check",
+      "text": "Gudang itu berdebu, berat, dan sebagian terkunci. Kalian harus memilih dan mengambil perlengkapan yang tepat sebelum penjaga berganti ronda.",
+      "image": "bg_castle_interior.webp",
+      "difficulty": 12,
+      "required_ability": "intelligence",
+      "on_success": "node_006b_armory_success",
+      "on_fail": "node_006c_armory_fail"
+    },
+    "node_006b_armory_success": {
+      "type": "narrative",
+      "text": "Kalian menemukan vambrace dan lapisan kulit baja ringan yang masih layak pakai. Tidak penuh, tapi cukup memberi rasa aman ekstra untuk perjalanan ke utara.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_020_merge_north"
+    },
+    "node_006c_armory_fail": {
+      "type": "narrative",
+      "text": "Kalian membuang waktu di gudang dan hanya mendapatkan perlengkapan seadanya. Tidak ada item besar yang selamat, tapi kalian masih sempat berangkat ke utara.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_020_merge_north"
+    },
+
+    "node_003_underworld_route": {
+      "type": "narrative",
+      "text": "Lorong belakang pasar gelap dipenuhi tatapan dingin, lilin murahan, dan kode tangan yang hanya dimengerti para penyelundup. Nama kalian sudah mulai dikenal, tapi rasa takut pada The Pale Hand lebih kuat daripada rasa hormat pada raja.",
+      "image": "bg_market.webp",
+      "auto_advance": 7000,
+      "next": "node_004_underworld_check"
+    },
+    "node_004_underworld_check": {
+      "type": "dice_check",
+      "text": "Peta transaksi dan sandi kargo berserakan di meja. Jika kalian salah membaca, kalian bisa menuju lokasi palsu atau jebakan.",
+      "image": "bg_market.webp",
+      "difficulty": 15,
+      "required_ability": "intelligence",
+      "on_success": "node_005_underworld_success",
+      "on_fail": "node_005_underworld_fail"
+    },
+    "node_005_underworld_success": {
+      "type": "narrative",
+      "text": "Kode berhasil dibaca. Rute barang gelap, kristal merah, dan alat ritual mengarah ke jalur rahasia menuju Xal'thor. Kalian mendapat pemahaman lebih baik tentang jaringan musuh.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_006_underworld_side_choice"
+    },
+    "node_005_underworld_fail": {
+      "type": "narrative",
+      "text": "Sebagian kode salah dibaca. Kalian masih mendapat lokasi kasar, tapi tahu bahwa perjalanan ini akan lebih berbahaya dari yang diperkirakan.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_006_underworld_side_choice"
+    },
+    "node_006_underworld_side_choice": {
+      "type": "voting",
+      "text": "Salah satu penyelundup berbisik tentang vault kontraband kecil di bawah toko rempah. Bisa jadi berisi alat bantu penting. Ambil risiko atau tetap fokus?",
+      "image": "bg_market.webp",
+      "timeout": 25000,
+      "on_timeout": "node_020_merge_north",
+      "options": [
+        { "id": "node_006d_smuggler_vault", "text": "Masuk ke vault kontraband" },
+        { "id": "node_020_merge_north", "text": "Jangan buang waktu" }
+      ]
+    },
+    "node_006d_smuggler_vault": {
+      "type": "dice_check",
+      "text": "Vault sempit itu dipenuhi jebakan mekanis rakitan kasar. Kalian harus bergerak cepat dan akurat untuk membukanya tanpa bunyi keras.",
+      "image": "bg_market.webp",
+      "difficulty": 13,
+      "required_ability": "dexterity",
+      "on_success": "node_006e_smuggler_success",
+      "on_fail": "node_006f_smuggler_fail"
+    },
+    "node_006e_smuggler_success": {
+      "type": "narrative",
+      "text": "Di dalam vault, kalian menemukan lensa sigil dengan ukiran kuno. Benda itu tampak seperti alat pembaca rune atau jebakan sihir. Kalian menyimpannya sebelum pergi.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_020_merge_north"
+    },
+    "node_006f_smuggler_fail": {
+      "type": "narrative",
+      "text": "Mekanisme jebakan aktif dan memaksa kalian kabur sebelum penjaga bawah tanah datang. Tidak ada loot, tapi kalian berhasil keluar hidup-hidup.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_020_merge_north"
+    },
+
+    "node_003_cult_route": {
+      "type": "narrative",
+      "text": "Simbol tangan pucat membawa kalian ke katakombe tua di bawah distrik barat. Lilin hitam meleleh di lantai batu, dan udara terasa berat seolah-olah sesuatu di tempat ini masih berdoa dalam bahasa mati.",
+      "image": "bg_dark_forest.webp",
+      "auto_advance": 7000,
+      "next": "node_004_cult_check"
+    },
+    "node_004_cult_check": {
+      "type": "dice_check",
+      "text": "Aura sihir gelap dari ritual lama menekan dada dan pikiran kalian. Jika kalian membiarkannya, arah dan logika akan runtuh.",
+      "image": "bg_dark_forest.webp",
+      "difficulty": 15,
+      "required_ability": "wisdom",
+      "on_success": "node_005_cult_success",
+      "on_fail": "node_005_cult_fail"
+    },
+    "node_005_cult_success": {
+      "type": "narrative",
+      "text": "Kalian bertahan dari tekanan gelap itu dan membaca pola ritual di lantai. Tanda-tanda menunjukkan bahwa lokasi tujuan utama mereka memang Sanctum Xal'thor.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_006_cult_side_choice"
+    },
+    "node_005_cult_fail": {
+      "type": "narrative",
+      "text": "Kepala kalian berdenyut dan penglihatan berbayang, tapi sebelum ritual itu menelan kesadaran kalian, salah satu dari kalian sempat menangkap arah utara sebagai pusat aktivitas mereka.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_006_cult_side_choice"
+    },
+    "node_006_cult_side_choice": {
+      "type": "voting",
+      "text": "Di ruang altar samping, ada pecahan kristal merah yang masih memancarkan panas aneh. Mengambilnya bisa berbahaya, tapi mungkin berguna. Keputusan kalian?",
+      "image": "bg_dark_forest.webp",
+      "timeout": 25000,
+      "on_timeout": "node_020_merge_north",
+      "options": [
+        { "id": "node_006g_core_shard", "text": "Ambil pecahan kristal itu" },
+        { "id": "node_020_merge_north", "text": "Tinggalkan dan lanjutkan" }
+      ]
+    },
+    "node_006g_core_shard": {
+      "type": "dice_check",
+      "text": "Kristal itu panas seperti darah hidup. Kalian harus menstabilkan genggaman dan menahan resonansinya.",
+      "image": "bg_dark_forest.webp",
+      "difficulty": 14,
+      "required_ability": "constitution",
+      "on_success": "node_006h_core_success",
+      "on_fail": "node_006i_core_fail"
+    },
+    "node_006h_core_success": {
+      "type": "narrative",
+      "text": "Kalian berhasil mengambil pecahan inti ritual tanpa tersengat balik terlalu parah. Benda itu berdetak pelan, seolah masih menyimpan denyut kekuatan Sanctum.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_020_merge_north"
+    },
+    "node_006i_core_fail": {
+      "type": "narrative",
+      "text": "Energi kristal menyengat tangan kalian dan memecahkan sebagian altar. Kalian mundur, menahan nyeri, lalu memutuskan untuk segera meninggalkan katakombe.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_020_merge_north"
+    },
+
+    "node_020_merge_north": {
+      "type": "narrative",
+      "text": "Apa pun jalur yang kalian tempuh, semua petunjuk berakhir di tempat yang sama: reruntuhan dan sanctum tua Xal'thor di pegunungan utara. Jika The Pale Hand sedang membangun sesuatu, maka pusatnya ada di sana.",
+      "image": "bg_crossroads.webp",
+      "auto_advance": 8000,
+      "next": "node_021_north_route_choice"
+    },
+    "node_021_north_route_choice": {
+      "type": "voting",
+      "text": "Di kaki pegunungan, kalian melihat dua jalur utama menuju Sanctum: jalan batu lama yang dijaga, atau terowongan es bawah tanah yang sempit dan berbahaya.",
+      "image": "bg_crossroads.webp",
+      "timeout": 30000,
+      "on_timeout": "node_022_main_road",
+      "options": [
+        { "id": "node_022_main_road", "text": "Lewat jalan utama" },
+        { "id": "node_022_ice_tunnel", "text": "Masuk ke terowongan es" }
+      ]
+    },
+
+    "node_022_main_road": {
+      "type": "dice_check",
+      "text": "Patroli bayaran bersenjata tombak menutup jalur batu itu. Untuk menembus mereka, kalian harus menghancurkan formasi sebelum alarm dikirim ke atas.",
+      "image": "bg_battle.webp",
+      "difficulty": 16,
+      "required_ability": "strength",
+      "on_success": "node_023_main_success",
+      "on_fail": "node_023_main_fail"
+    },
+    "node_023_main_success": {
+      "type": "narrative",
+      "text": "Formasi bayaran pecah. Jalan utama terbuka, dan kalian bisa mencapai gerbang Sanctum dengan ritme serangan masih di tangan kalian.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_030_sanctum_arrival"
+    },
+    "node_023_main_fail": {
+      "type": "narrative",
+      "text": "Pertempuran memakan waktu lebih lama dari yang diharapkan. Kalian tetap menang, tapi suara bentrokan pasti terdengar sampai ke dalam Sanctum. Musuh akan lebih siap.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_030_sanctum_arrival"
+    },
+
+    "node_022_ice_tunnel": {
+      "type": "dice_check",
+      "text": "Dinding es memantulkan suara napas kalian sendiri. Retakan di lantai menandakan bahaya runtuh kapan saja. Kalian harus bergerak hati-hati namun cepat.",
+      "image": "bg_dark_forest.webp",
+      "difficulty": 15,
+      "required_ability": "dexterity",
+      "on_success": "node_024_tunnel_success",
+      "on_fail": "node_024_tunnel_fail"
+    },
+    "node_024_tunnel_success": {
+      "type": "narrative",
+      "text": "Kalian melewati terowongan es tanpa menimbulkan runtuhan besar. Jalur ini menempatkan kalian lebih dekat ke belakang area ritual.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_025_tunnel_side_choice"
+    },
+    "node_024_tunnel_fail": {
+      "type": "narrative",
+      "text": "Sebagian dinding es runtuh dan memaksa kalian menahan beban batu dan salju. Kalian keluar dengan napas berat, dan kebisingan itu kemungkinan sudah memberi tahu musuh bahwa kalian datang.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_025_tunnel_side_choice"
+    },
+    "node_025_tunnel_side_choice": {
+      "type": "voting",
+      "text": "Di salah satu cabang terowongan, kalian menemukan ruangan es kecil seperti reliquary beku. Bisa jadi berisi suplai, bisa juga jebakan. Tetap periksa?",
+      "image": "bg_dark_forest.webp",
+      "timeout": 25000,
+      "on_timeout": "node_030_sanctum_arrival",
+      "options": [
+        { "id": "node_025a_reliquary", "text": "Periksa reliquary beku" },
+        { "id": "node_030_sanctum_arrival", "text": "Tinggalkan dan lanjutkan" }
+      ]
+    },
+    "node_025a_reliquary": {
+      "type": "dice_check",
+      "text": "Kotak-kotak es harus dibuka tanpa memecahkan lapisan penyangga. Jika salah, ruangan bisa tertutup runtuhan beku.",
+      "image": "bg_dark_forest.webp",
+      "difficulty": 13,
+      "required_ability": "intelligence",
+      "on_success": "node_025b_reliquary_success",
+      "on_fail": "node_025c_reliquary_fail"
+    },
+    "node_025b_reliquary_success": {
+      "type": "narrative",
+      "text": "Di dalam reliquary, kalian menemukan flask penyembuhan dan catatan singkat dari penjelajah lama yang menyebut jantung ritual di altar utama. Informasi itu bisa menentukan strategi nanti.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_030_sanctum_arrival"
+    },
+    "node_025c_reliquary_fail": {
+      "type": "narrative",
+      "text": "Es pecah lebih cepat dari yang diperkirakan. Kalian dipaksa lari dari runtuhan beku dan tidak sempat mengambil apa-apa. Namun jalan ke Sanctum masih terbuka.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_030_sanctum_arrival"
+    },
+
+    "node_030_sanctum_arrival": {
+      "type": "narrative",
+      "text": "Reruntuhan Xal'thor berdiri seperti luka tua di pegunungan. Di tengah aula sanctum, kristal merah berdenyut seperti jantung. Di depannya berdiri sosok tinggi dalam zirah hitam: The Shadow Knight, penjaga kehendak The Pale Hand.",
+      "image": "bg_campfire.webp",
+      "auto_advance": 8000,
+      "next": "node_031_boss_choice"
+    },
+    "node_031_boss_choice": {
+      "type": "voting",
+      "text": "The Shadow Knight menantang kalian tanpa bergerak dari altar. Satu langkah salah akan membuat seluruh ruangan meledak oleh energi ritual. Taktik party?",
+      "image": "bg_battle.webp",
+      "timeout": 35000,
+      "on_timeout": "node_032_boss_frontal",
+      "options": [
+        { "id": "node_032_boss_frontal", "text": "Duel frontal dan hancurkan dia" },
+        { "id": "node_032_boss_core", "text": "Abaikan dia, fokus hancurkan inti ritual" },
+        { "id": "node_032_boss_bait", "text": "Pancing dia menjauh dari altar" }
+      ]
+    },
+    "node_032_boss_frontal": {
+      "type": "dice_check",
+      "text": "Benturan senjata dengan The Shadow Knight terasa seperti menabrak gerbang baja. Kalian harus mematahkan ritme serangannya.",
+      "image": "bg_battle.webp",
+      "difficulty": 17,
+      "required_ability": "strength",
+      "on_success": "node_040_boss_success",
+      "on_fail": "node_041_boss_fail"
+    },
+    "node_032_boss_core": {
+      "type": "dice_check",
+      "text": "Untuk menghancurkan inti ritual, kalian harus bergerak melewati hujan tebasan dan sihir bayangan dengan presisi nyaris mustahil.",
+      "image": "bg_battle.webp",
+      "difficulty": 16,
+      "required_ability": "dexterity",
+      "on_success": "node_040_boss_success",
+      "on_fail": "node_041_boss_fail"
+    },
+    "node_032_boss_bait": {
+      "type": "dice_check",
+      "text": "Kalian mencoba memancing The Shadow Knight meninggalkan altar dengan kombinasi ancaman, posisi, dan tipu langkah. Ini butuh ketenangan taktis yang sempurna.",
+      "image": "bg_battle.webp",
+      "difficulty": 16,
+      "required_ability": "wisdom",
+      "on_success": "node_040_boss_success",
+      "on_fail": "node_041_boss_fail"
+    },
+    "node_040_boss_success": {
+      "type": "narrative",
+      "text": "Strategi kalian berhasil. Entah dengan menghancurkan ritmenya, mengganggu altar, atau memancingnya keluar posisi, The Shadow Knight akhirnya goyah. Tubuhnya retak oleh cahaya merah dan berubah menjadi kabut hitam sebelum lenyap. Di altar tertinggal peta perang menuju ibukota Valdris.",
+      "image": "bg_victory.webp",
+      "auto_advance": 9000,
+      "next": "node_050_end_decisive"
+    },
+    "node_041_boss_fail": {
+      "type": "narrative",
+      "text": "The Shadow Knight terlalu kuat untuk dikalahkan bersih. Sanctum mulai runtuh ketika energi kristal lepas kendali. Kalian terpaksa mundur, tapi sempat meraih sebagian peta perang sebelum kabut dan batu menelan altar.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 9000,
+      "next": "node_051_end_survival"
+    },
+    "node_050_end_decisive": {
+      "type": "effect",
+      "text": "[CHAPTER 2 SELESAI] Kalian menang di Sanctum Xal'thor. Shadow Knight runtuh, dan peta perang menunjukkan target berikutnya: Ibukota Valdris. Pertarungan terbesar belum datang — itu baru dimulai.",
+      "image": "bg_victory.webp",
+      "auto_advance": 10000,
+      "next": "node_050_end_decisive"
+    },
+    "node_051_end_survival": {
+      "type": "effect",
+      "text": "[CHAPTER 2 SELESAI] Kalian selamat dari runtuhnya Sanctum dan membawa bukti yang cukup untuk satu kesimpulan pahit: ibukota akan diserang. Kemenangan penuh gagal diraih, tapi perang final kini tak terhindarkan.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 10000,
+      "next": "node_051_end_survival"
+    }
+  }
+}

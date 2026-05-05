@@ -44,19 +44,22 @@ export default function PlayerScreen() {
   };
 
   useEffect(() => {
-    // Membaca path scenario dari store/firebase atau fallback ke valdris chapter 1
-    // (Karena `store.scenario_version` belum diexpose di GameStore, fallback dulu. Nanti saya lengkapi).
-    loadScenario('/becoder-dnd/scenarios/valdris/chapter_01_escape.json')
+    const path = `/becoder-dnd/scenarios/${store.scenario_version || 'valdris/chapter_01_escape'}.json`;
+    loadScenario(path)
       .then(setScenario)
       .catch(console.error);
-  }, []);
+  }, [store.scenario_version]);
 
   useEffect(() => {
     if (!scenario || !store.currentNode) return;
     setCurrentNode(getNode(scenario, store.currentNode));
+    
+    // Reset status aksi secara eksplisit saat node berubah
     setHasVoted(false);
     setHasRolled(false);
     setDiceValue(null);
+    setIsRolling(false);
+    setDiceAnim(false);
   }, [store.currentNode, scenario]);
 
   async function handleVote(optionId: string) {
@@ -174,7 +177,7 @@ export default function PlayerScreen() {
 
       <div className="flex-1 flex flex-col items-center justify-center p-6 bg-gradient-to-t from-black to-transparent">
         <AnimatePresence mode="wait">
-          {currentNode?.id === 'node_010_end' && (
+          {currentNode?.type === 'effect' && (
             <motion.div
               key="end"
               initial={{ opacity: 0, scale: 0.96 }}
@@ -194,7 +197,7 @@ export default function PlayerScreen() {
             </motion.div>
           )}
 
-          {currentNode?.id !== 'node_010_end' && store.phase === 'voting' && currentNode?.options && (
+          {currentNode?.type !== 'effect' && store.phase === 'voting' && currentNode?.options && (
             <motion.div
               key="voting"
               initial={{ opacity: 0, y: 20 }}
@@ -254,9 +257,7 @@ export default function PlayerScreen() {
                 <div className="inline-block px-3 py-1 bg-red-500/20 text-red-400 text-[10px] font-bold uppercase tracking-[0.2em] rounded-full border border-red-500/30 mb-2">
                   Dice Roll
                 </div>
-                {currentNode?.difficulty && (
-                  <p className="text-yellow-400 text-sm">Target DC: <strong>{currentNode.difficulty}</strong></p>
-                )}
+                <p className="text-white text-sm">Lempar dadumu!</p>
               </div>
 
               <motion.div
@@ -297,8 +298,22 @@ export default function PlayerScreen() {
 
           {(store.phase === 'idle' || store.phase === 'animating' || store.phase === 'resolving') && (
             <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center flex flex-col items-center gap-4">
-              <div className="w-12 h-12 border-4 border-yellow-400/20 border-t-yellow-400/60 rounded-full animate-spin" />
-              <p className="text-gray-400">{store.phase === 'resolving' ? 'Memproses hasil...' : 'Menunggu...'}</p>
+              
+              {/* Jika sedang resolving dadu, tunjukkan angkanya sebentar */}
+              {store.phase === 'resolving' && diceValue !== null ? (
+                <div className="flex flex-col items-center gap-2 mb-4">
+                  <div className="w-24 h-24 bg-[#111] border-2 border-yellow-400/40 rounded-2xl flex items-center justify-center">
+                    <span className={`font-serif font-bold text-4xl ${diceValue === 20 ? 'text-yellow-300' : diceValue === 1 ? 'text-red-400' : 'text-white'}`}>
+                      {diceValue}
+                    </span>
+                  </div>
+                  <p className="text-yellow-400 text-xs font-bold uppercase tracking-widest">Memproses Hasil...</p>
+                </div>
+              ) : (
+                <div className="w-12 h-12 border-4 border-yellow-400/20 border-t-yellow-400/60 rounded-full animate-spin" />
+              )}
+              
+              <p className="text-gray-400">{store.phase === 'resolving' ? '' : 'Menunggu...'}</p>
             </motion.div>
           )}
         </AnimatePresence>

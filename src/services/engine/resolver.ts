@@ -67,53 +67,38 @@ export async function runResolverTick(
 ): Promise<void> {
   const { roomId, state, players, votes, dice } = room;
 
-  if (state.is_resolving) return;
+  // JANGAN proses jika sedang dalam transisi atau data tidak ada
+  if (state.is_resolving || !currentNode) return;
 
   if (state.phase === 'voting') {
     const options = currentNode.options?.map((o) => o.id) ?? [];
-    const allVoted = allPlayersVoted(votes, players);
     
-    const activePlayerCount = Object.values(players).filter(p => p.status === 'active').length;
-    const afkPlayers = getAfkPlayers(votes, players);
-    const hasTimeout = currentNode.timeout && currentNode.on_timeout;
-
-    // Timeout logic:
-    // Jika ada timeout dan belum semua vote, tapi waktu habis (ditangani timer eksternal),
-    // atau jika resolver ini dipanggil PAKSA karena timeout (kita butuh flag khusus dari TV)
-    // Untuk sekarang, karena TVScreen.tsx tidak punya flag 'forceResolve', kita asumsikan
-    // timeout di-handle langsung oleh TVScreen dengan memanggil setPhase/transitionNode.
-    // Jadi di sini kita fokus pada 'semua sudah vote'.
-
+    // Pastikan data votes ada dan pemain aktif sudah berpartisipasi
+    if (!votes || Object.keys(votes).length === 0) return;
+    
+    const allVoted = allPlayersVoted(votes, players);
     if (!allVoted) return;
 
     await updateRoomState(roomId, { is_resolving: true });
-
     const winner = resolveVoting(votes, options);
-
     await transitionNode(roomId, winner);
-    await updateRoomState(roomId, { is_resolving: false });
   }
 
   if (state.phase === 'rolling') {
+    // Pastikan data dadu ada
+    if (!dice || Object.keys(dice).length === 0) return;
+    
     if (!allPlayersRolled(dice, players)) return;
 
     await updateRoomState(roomId, { is_resolving: true });
-
     const rolls = Object.values(dice);
     const highestRoll = Math.max(...rolls.map((d) => d.value));
-    const result = resolveDiceCheck(
-      highestRoll,
-      currentNode.difficulty ?? 15
-    );
+    const result = resolveDiceCheck(highestRoll, currentNode.difficulty ?? 15);
 
     const nextNode = (result === 'success' || result === 'critical_success')
       ? currentNode.on_success
       : currentNode.on_fail;
 
-    if (nextNode) {
-      await transitionNode(roomId, nextNode);
-    }
-
-    await updateRoomState(roomId, { is_resolving: false });
+    if (nextNode) await transitionNode(roomId, nextNode);
   }
 }

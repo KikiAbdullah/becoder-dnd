@@ -1,0 +1,336 @@
+{
+  "scenario_id": "chapter_03_true_hand",
+  "start_node": "node_001_intro",
+  "nodes": {
+    "node_001_intro": {
+      "type": "narrative",
+      "text": "Asap hitam membubung dari menara Valdris. Saat party tiba di ibukota, gerbang luar telah jebol, warga berlarian, dan para pemberontak mengibarkan simbol tangan pucat di jalan-jalan utama. Malam penentuan akhirnya datang.",
+      "image": "bg_city_dawn.webp",
+      "auto_advance": 8000,
+      "next": "node_002_entry_choice"
+    },
+    "node_002_entry_choice": {
+      "type": "voting",
+      "text": "Untuk mencapai menara utama, kalian harus melewati kota yang sedang terbakar. Jalur cepat penuh pertumpahan darah, sedangkan jalur tersembunyi membawa risiko lain. Bagaimana kalian masuk ke jantung perang?",
+      "image": "bg_castle_gate.webp",
+      "timeout": 30000,
+      "on_timeout": "node_003_frontline",
+      "options": [
+        { "id": "node_003_frontline", "text": "Terobos garis depan pemberontak" },
+        { "id": "node_003_wall_climb", "text": "Naiki sisi luar benteng" },
+        { "id": "node_003_civilian_rescue", "text": "Bantu warga yang terjebak dulu" }
+      ]
+    },
+
+    "node_003_frontline": {
+      "type": "dice_check",
+      "text": "Benteng manusia, perisai, tombak, dan panah membentuk dinding hidup di depan kalian. Untuk menembusnya, kalian harus menghancurkan moral mereka sekaligus.",
+      "image": "bg_battle.webp",
+      "difficulty": 16,
+      "required_ability": "strength",
+      "on_success": "node_004_frontline_success",
+      "on_fail": "node_004_frontline_fail"
+    },
+    "node_004_frontline_success": {
+      "type": "narrative",
+      "text": "Kalian menembus barisan pemberontak dan memaksa mereka tercerai-berai. Jalan menuju tangga menara terbuka lebih cepat dari yang diperkirakan.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_010_tower_merge"
+    },
+    "node_004_frontline_fail": {
+      "type": "narrative",
+      "text": "Pertempuran menggerus tenaga dan perlengkapan party. Kalian tetap berhasil menembus garis depan, tapi banyak waktu dan darah terbuang sebelum menara dapat dicapai.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_010_tower_merge"
+    },
+
+    "node_003_wall_climb": {
+      "type": "dice_check",
+      "text": "Dinding luar benteng licin oleh hujan abu dan terpaan angin. Satu kesalahan akan menjatuhkan kalian ke halaman penuh musuh.",
+      "image": "bg_castle_interior.webp",
+      "difficulty": 15,
+      "required_ability": "constitution",
+      "on_success": "node_005_wall_success",
+      "on_fail": "node_005_wall_fail"
+    },
+    "node_005_wall_success": {
+      "type": "narrative",
+      "text": "Dengan napas berat dan tangan membeku, kalian berhasil mencapai balkon samping benteng tanpa ketahuan banyak pasukan di bawah. Kalian mendapatkan akses lebih dekat ke menara.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_006_wall_side_choice"
+    },
+    "node_005_wall_fail": {
+      "type": "narrative",
+      "text": "Beberapa batu pijakan lepas dan hampir menjatuhkan kalian. Kalian tetap naik, tapi luka dan kelelahan mulai menumpuk sebelum bahkan melihat musuh utama.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_006_wall_side_choice"
+    },
+    "node_006_wall_side_choice": {
+      "type": "voting",
+      "text": "Di balkon samping ada dua arah: jalur pendek langsung ke menara, atau lorong samping menuju paviliun harta kerajaan yang tampaknya setengah terbuka. Kalian sempat mengambil salah satu.",
+      "image": "bg_castle_interior.webp",
+      "timeout": 25000,
+      "on_timeout": "node_010_tower_merge",
+      "options": [
+        { "id": "node_006a_treasury_annex", "text": "Masuk ke annex harta kerajaan" },
+        { "id": "node_010_tower_merge", "text": "Langsung ke menara" }
+      ]
+    },
+    "node_006a_treasury_annex": {
+      "type": "dice_check",
+      "text": "Annex itu rusak dan penuh reruntuhan. Kalian harus bergerak cepat sebelum lantainya ambruk atau penjaga datang.",
+      "image": "bg_castle_interior.webp",
+      "difficulty": 13,
+      "required_ability": "dexterity",
+      "on_success": "node_006b_treasury_success",
+      "on_fail": "node_006c_treasury_fail"
+    },
+    "node_006b_treasury_success": {
+      "type": "narrative",
+      "text": "Di antara reruntuhan annex, kalian menemukan elixir kerajaan dan spearhead upacara dari sunsteel. Keduanya tidak menyelesaikan perang, tapi bisa menyelamatkan hidup di momen yang tepat.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_010_tower_merge"
+    },
+    "node_006c_treasury_fail": {
+      "type": "narrative",
+      "text": "Lantai annex pecah sebelum kalian sempat mengambil banyak hal. Kalian melompat keluar tepat waktu dan memilih berlari menuju menara sebelum semuanya runtuh sepenuhnya.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_010_tower_merge"
+    },
+
+    "node_003_civilian_rescue": {
+      "type": "narrative",
+      "text": "Di tengah kekacauan, kalian melihat sekelompok warga terjebak di bangunan yang terbakar. Teriakan mereka bercampur dengan suara perang. Menolong mereka berarti kehilangan waktu — tapi meninggalkan mereka bisa menghantui kalian selamanya.",
+      "image": "bg_city_dawn.webp",
+      "auto_advance": 7000,
+      "next": "node_007_rescue_check"
+    },
+    "node_007_rescue_check": {
+      "type": "dice_check",
+      "text": "Balok kayu mulai runtuh. Kalian harus membuka jalan keluar dan menahan kepanikan semua orang sekaligus.",
+      "image": "bg_battle.webp",
+      "difficulty": 14,
+      "required_ability": "constitution",
+      "on_success": "node_008_rescue_success",
+      "on_fail": "node_008_rescue_fail"
+    },
+    "node_008_rescue_success": {
+      "type": "narrative",
+      "text": "Warga berhasil diselamatkan. Salah satu dari mereka, mantan pelayan istana, memberi tahu tentang jalur pendek menuju dasar menara melalui lorong dapur belakang.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_010_tower_merge"
+    },
+    "node_008_rescue_fail": {
+      "type": "narrative",
+      "text": "Kalian menyelamatkan sebagian warga, tapi kehilangan terlalu banyak waktu dan tenaga. Namun petunjuk dari salah satu penyintas tetap memberi kalian akses ke jalur pendek menuju menara.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_010_tower_merge"
+    },
+
+    "node_010_tower_merge": {
+      "type": "narrative",
+      "text": "Apa pun jalur yang ditempuh, kalian akhirnya mencapai menara utama. Di dalamnya, tangga spiral, lorong retak, dan darah para pemberontak membentuk satu jalan ke atas: menuju The Pale Hand.",
+      "image": "bg_castle_interior.webp",
+      "auto_advance": 8000,
+      "next": "node_011_tower_choice"
+    },
+    "node_011_tower_choice": {
+      "type": "voting",
+      "text": "Naik ke puncak menara bisa dilakukan lewat tangga spiral utama atau melalui poros lift tua yang rusak. Keduanya sama-sama berbahaya, tapi dengan cara berbeda.",
+      "image": "bg_castle_interior.webp",
+      "timeout": 30000,
+      "on_timeout": "node_012_spiral_stairs",
+      "options": [
+        { "id": "node_012_spiral_stairs", "text": "Naik lewat tangga spiral" },
+        { "id": "node_012_lift_shaft", "text": "Naik lewat poros lift tua" },
+        { "id": "node_012_mirror_hall", "text": "Masuk ke hall cermin yang menyimpang ke samping" }
+      ]
+    },
+
+    "node_012_spiral_stairs": {
+      "type": "dice_check",
+      "text": "Tangga spiral dipenuhi penjaga elit dan jebakan baut panah dari celah dinding. Kalian harus mendorong terus tanpa kehilangan ritme.",
+      "image": "bg_battle.webp",
+      "difficulty": 15,
+      "required_ability": "strength",
+      "on_success": "node_013_spiral_success",
+      "on_fail": "node_013_spiral_fail"
+    },
+    "node_013_spiral_success": {
+      "type": "narrative",
+      "text": "Kalian memecah pertahanan tangga dan naik sampai puncak tanpa memberi musuh waktu mengatur ulang formasi.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_020_final_platform"
+    },
+    "node_013_spiral_fail": {
+      "type": "narrative",
+      "text": "Kalian tetap naik, tapi beberapa jebakan melukai party dan memperlambat langkah. Puncak menara tetap tercapai, walau tidak dalam kondisi terbaik.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_020_final_platform"
+    },
+
+    "node_012_lift_shaft": {
+      "type": "dice_check",
+      "text": "Poros lift tua itu gelap, sempit, dan penuh roda gigi karatan. Kalian harus memanjat di antara jurang dan logam bergerigi.",
+      "image": "bg_castle_interior.webp",
+      "difficulty": 15,
+      "required_ability": "dexterity",
+      "on_success": "node_014_lift_success",
+      "on_fail": "node_014_lift_fail"
+    },
+    "node_014_lift_success": {
+      "type": "narrative",
+      "text": "Kalian muncul di balik balkon atas tanpa suara besar. Dari sini, ruang final tinggal satu pintu lagi.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_020_final_platform"
+    },
+    "node_014_lift_fail": {
+      "type": "narrative",
+      "text": "Salah satu pijakan lepas dan hampir menjatuhkan kalian. Meski selamat, dentuman logam memberi tahu siapa pun di atas bahwa kalian sudah dekat.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_020_final_platform"
+    },
+
+    "node_012_mirror_hall": {
+      "type": "dice_check",
+      "text": "Hall cermin memantulkan bayangan kalian sendiri menjadi siluet-siluet musuh. Jika kalian gagal membaca mana yang nyata, kalian akan terjebak dalam kebingungan berbahaya.",
+      "image": "bg_negotiation.webp",
+      "difficulty": 15,
+      "required_ability": "wisdom",
+      "on_success": "node_015_mirror_success",
+      "on_fail": "node_015_mirror_fail"
+    },
+    "node_015_mirror_success": {
+      "type": "narrative",
+      "text": "Di balik ilusi, kalian menemukan mural lama tentang seorang jenderal kerajaan yang dikhianati oleh pengadilan. Potongan sejarah ini memberi kalian pemahaman baru tentang siapa sebenarnya The Pale Hand.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_020_final_platform"
+    },
+    "node_015_mirror_fail": {
+      "type": "narrative",
+      "text": "Ilusi membuat kalian kehilangan waktu dan arah. Namun, satu retakan di dinding memaksa jalan keluar ke koridor atas. Kalian tetap sampai ke ruang final, hanya lebih lelah dan bingung.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_020_final_platform"
+    },
+
+    "node_020_final_platform": {
+      "type": "narrative",
+      "text": "Pintu terakhir terbuka ke platform tertinggi menara. Di sana, raja berlutut dalam rantai. Di belakangnya berdiri The Pale Hand sambil memegang tongkat kerajaan yang menyala merah. Saat ia membalikkan badan, kalian akhirnya melihat wajahnya dengan jelas: mantan Jenderal Kehormatan Valdris.",
+      "image": "bg_negotiation.webp",
+      "auto_advance": 9000,
+      "next": "node_021_final_choice"
+    },
+    "node_021_final_choice": {
+      "type": "voting",
+      "text": "'Kerajaan ini dibangun di atas pengkhianatan,' katanya dengan suara tenang namun penuh murka. Tongkat merah di tangannya mengumpulkan badai sihir. Bagaimana kalian mengakhiri semua ini?",
+      "image": "bg_battle.webp",
+      "timeout": 40000,
+      "on_timeout": "node_022_final_battle",
+      "options": [
+        { "id": "node_022_final_battle", "text": "Habisi The Pale Hand dalam pertarungan akhir" },
+        { "id": "node_022_disarm_staff", "text": "Fokus menghancurkan tongkat kerajaannya" },
+        { "id": "node_022_redeem_path", "text": "Coba tarik kembali sisi manusianya" }
+      ]
+    },
+
+    "node_022_final_battle": {
+      "type": "dice_check",
+      "text": "Pertarungan terakhir pecah di tengah badai sihir dan pecahan batu. Hanya satu serangan yang tepat yang bisa mematahkan dominasi The Pale Hand.",
+      "image": "bg_battle.webp",
+      "difficulty": 17,
+      "required_ability": "strength",
+      "on_success": "node_030_battle_win",
+      "on_fail": "node_031_battle_fail"
+    },
+    "node_022_disarm_staff": {
+      "type": "dice_check",
+      "text": "Tongkat itu adalah poros kekuatan malam ini. Kalian harus menembus pertahanannya dan memukul artefak itu di titik yang tepat.",
+      "image": "bg_battle.webp",
+      "difficulty": 16,
+      "required_ability": "dexterity",
+      "on_success": "node_032_disarm_win",
+      "on_fail": "node_031_battle_fail"
+    },
+    "node_022_redeem_path": {
+      "type": "dice_check",
+      "text": "Untuk menghentikannya tanpa membunuh, kalian harus memanggil luka masa lalunya, kehormatan lamanya, dan alasan terakhir agar ia tidak melangkah lebih jauh.",
+      "image": "bg_negotiation.webp",
+      "difficulty": 17,
+      "required_ability": "charisma",
+      "on_success": "node_033_redeem_win",
+      "on_fail": "node_031_battle_fail"
+    },
+
+    "node_030_battle_win": {
+      "type": "narrative",
+      "text": "Serangan terakhir kalian menembus pertahanan The Pale Hand. Tubuhnya roboh, dan badai sihir di sekeliling menara meredup seperti api kehabisan udara. Pemberontakan kehilangan pusatnya dalam satu momen sunyi.",
+      "image": "bg_victory.webp",
+      "auto_advance": 9000,
+      "next": "node_040_end_heroic"
+    },
+    "node_031_battle_fail": {
+      "type": "narrative",
+      "text": "Ledakan sihir merah memecahkan lantai platform. Kalian terpental dan menahan luka berat. Meski belum benar-benar kalah, kalian gagal menghentikan ritual dengan cara bersih, dan Valdris harus membayar harga kemenangan yang jauh lebih mahal.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 9000,
+      "next": "node_041_end_ashen"
+    },
+    "node_032_disarm_win": {
+      "type": "narrative",
+      "text": "Tongkat kerajaan retak di titik fokus energinya, lalu hancur menjadi serpihan cahaya merah. Tanpa artefak itu, The Pale Hand kehilangan pijakan kekuatannya dan jatuh berlutut. Perang dimenangkan tanpa menghancurkan seluruh menara.",
+      "image": "bg_victory.webp",
+      "auto_advance": 9000,
+      "next": "node_042_end_silent"
+    },
+    "node_033_redeem_win": {
+      "type": "narrative",
+      "text": "Kata-kata kalian akhirnya menembus kemarahan dan luka lamanya. Matanya goyah, lalu tongkat itu terlepas dari tangannya. Dengan suara pecah ia berbisik, 'Kalau begitu... akhiri kebencian ini tanpa aku.' Ia menyerah, dan perang berhenti di ambang kehancuran.",
+      "image": "bg_negotiation.webp",
+      "auto_advance": 9000,
+      "next": "node_043_end_redemption"
+    },
+
+    "node_040_end_heroic": {
+      "type": "effect",
+      "text": "[CAMPAIGN SELESAI — HEROIC END] Valdris selamat. Rakyat akan mengingat party kalian sebagai para pahlawan yang menutup malam tergelap kerajaan dengan kemenangan mutlak.",
+      "image": "bg_city_dawn.webp",
+      "auto_advance": 10000,
+      "next": "node_040_end_heroic"
+    },
+    "node_041_end_ashen": {
+      "type": "effect",
+      "text": "[CAMPAIGN SELESAI — ASHEN END] Kalian tetap menang, tetapi sebagian ibukota hancur dan terlalu banyak nyawa melayang. Valdris bertahan, namun bukan tanpa luka yang akan dikenang lama.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 10000,
+      "next": "node_041_end_ashen"
+    },
+    "node_042_end_silent": {
+      "type": "effect",
+      "text": "[CAMPAIGN SELESAI — SILENT END] Dengan menghancurkan artefak, kalian memutus perang di akarnya. Kemenangan ini tidak sekeras sorak peperangan, tapi mungkin justru itulah bentuk kejayaan paling langka.",
+      "image": "bg_victory.webp",
+      "auto_advance": 10000,
+      "next": "node_042_end_silent"
+    },
+    "node_043_end_redemption": {
+      "type": "effect",
+      "text": "[CAMPAIGN SELESAI — REDEMPTION END] Kalian menyelamatkan kerajaan tanpa menutup cerita dalam darah semata. Nama The Pale Hand akan tetap kontroversial, tapi malam itu Valdris memilih akhir yang lebih manusiawi.",
+      "image": "bg_negotiation.webp",
+      "auto_advance": 10000,
+      "next": "node_043_end_redemption"
+    }
+  }
+}

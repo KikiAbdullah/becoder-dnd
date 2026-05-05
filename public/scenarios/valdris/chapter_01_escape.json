@@ -1,0 +1,505 @@
+{
+  "scenario_id": "chapter_01_escape",
+  "start_node": "node_001_intro",
+  "nodes": {
+    "node_001_intro": {
+      "type": "narrative",
+      "text": "Malam di Valdris koyak oleh dentang lonceng darurat. Kalian sedang berada di The Rusty Mug ketika seorang prajurit bersimbah darah menerobos pintu dan jatuh di depan meja kalian. Dengan napas putus-putus ia berkata: 'The Black Vault dijebol... The Pale Hand kabur...' lalu pingsan.",
+      "image": "bg_inn.webp",
+      "auto_advance": 8000,
+      "next": "node_002_city_response"
+    },
+    "node_002_city_response": {
+      "type": "voting",
+      "text": "Keributan mulai terdengar dari luar. Kota belum benar-benar tahu apa yang terjadi, tapi malam ini jelas berubah menjadi medan perburuan. Apa langkah pertama party?",
+      "image": "bg_inn.webp",
+      "timeout": 30000,
+      "on_timeout": "node_003_gate_path",
+      "options": [
+        { "id": "node_003_gate_path", "text": "Berangkat ke gerbang kota dan bantu penjaga" },
+        { "id": "node_003_sewer_path", "text": "Masuk ke gorong-gorong untuk memotong jalur pelarian" },
+        { "id": "node_003_rooftop_path", "text": "Naik ke atap untuk mengintai kota" }
+      ]
+    },
+
+    "node_003_gate_path": {
+      "type": "narrative",
+      "text": "Di gerbang kota, kobaran api melahap kereta suplai. Sekelompok tahanan bersenjata memimpin kekacauan. Di barisan depan, seorang orc raksasa membelah formasi penjaga dengan kapaknya.",
+      "image": "bg_castle_gate.webp",
+      "auto_advance": 7000,
+      "next": "node_004_gate_battle"
+    },
+    "node_004_gate_battle": {
+      "type": "dice_check",
+      "text": "Orc itu menoleh dan mengaum ke arah kalian. Untuk menghentikan pelarian massal, kalian harus merobohkannya sekarang juga.",
+      "image": "bg_battle.webp",
+      "difficulty": 14,
+      "required_ability": "strength",
+      "on_success": "node_005_gate_win",
+      "on_fail": "node_005_gate_fail"
+    },
+    "node_005_gate_win": {
+      "type": "narrative",
+      "text": "Dengan serangan penuh tenaga, kalian mematahkan ritme pertempuran dan menjatuhkan orc itu. Para tahanan yang tersisa mundur, tapi beberapa sudah kabur ke arah Hutan Kelam.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_006_gate_loot_choice"
+    },
+    "node_005_gate_fail": {
+      "type": "narrative",
+      "text": "Kapak orc menghantam keras dan memaksa kalian bertahan alih-alih menyerang. Penjaga berhasil menahan gerbang untuk sesaat, tapi sebagian besar buronan tetap lolos ke arah Hutan Kelam.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_006_gate_loot_choice"
+    },
+    "node_006_gate_loot_choice": {
+      "type": "voting",
+      "text": "Salah satu penjaga berteriak bahwa peti suplai militer hampir terbakar. Kalian punya beberapa detik. Apa yang dilakukan?",
+      "image": "bg_castle_gate.webp",
+      "timeout": 25000,
+      "on_timeout": "node_007_gate_merge",
+      "options": [
+        { "id": "node_006a_save_supply", "text": "Selamatkan peti suplai" },
+        { "id": "node_007_gate_merge", "text": "Abaikan dan lanjut mengejar" }
+      ]
+    },
+    "node_006a_save_supply": {
+      "type": "dice_check",
+      "text": "Api menjalar cepat. Kalian harus menerobos panas dan mengangkat peti berat itu sebelum meledak.",
+      "image": "bg_castle_gate.webp",
+      "difficulty": 13,
+      "required_ability": "constitution",
+      "on_success": "node_006b_supply_win",
+      "on_fail": "node_006c_supply_fail"
+    },
+    "node_006b_supply_win": {
+      "type": "narrative",
+      "text": "Kalian berhasil menyelamatkan peti itu. Di dalamnya terdapat buckler ringan milik pengawal elit kerajaan. Peralatan ini bisa berguna nanti. Tanpa menunggu lebih lama, kalian berlari mengejar para buronan.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_007_gate_merge"
+    },
+    "node_006c_supply_fail": {
+      "type": "narrative",
+      "text": "Peti itu meledak sebelum sempat kalian seret jauh. Ledakannya memaksa kalian mundur, tapi setidaknya jalan ke luar kota sudah terbuka. Kalian segera lanjut memburu jejak pelarian.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_007_gate_merge"
+    },
+    "node_007_gate_merge": {
+      "type": "narrative",
+      "text": "Jejak para buronan mengarah jelas ke selatan, menuju Hutan Kelam — tempat kabut, predator, dan rahasia lama menelan siapa pun yang masuk terlalu dalam.",
+      "image": "bg_dark_forest_edge.webp",
+      "auto_advance": 7000,
+      "next": "node_020_forest_entry"
+    },
+
+    "node_003_sewer_path": {
+      "type": "narrative",
+      "text": "Kalian menyingkirkan penutup besi tua dan turun ke gorong-gorong Valdris. Air hitam setinggi betis mengalir pelan. Bau besi, jamur, dan bangkai memenuhi udara.",
+      "image": "bg_dark_forest.webp",
+      "auto_advance": 7000,
+      "next": "node_004_sewer_trap"
+    },
+    "node_004_sewer_trap": {
+      "type": "dice_check",
+      "text": "Percikan kecil memicu jebakan gas. Lorong sempit itu berubah menjadi jebakan maut dalam sekejap.",
+      "image": "bg_dark_forest.webp",
+      "difficulty": 15,
+      "required_ability": "dexterity",
+      "on_success": "node_005_sewer_win",
+      "on_fail": "node_005_sewer_fail"
+    },
+    "node_005_sewer_win": {
+      "type": "narrative",
+      "text": "Kalian berguling tepat waktu. Letupan api hanya membakar dinding dan menguapkan sebagian racun. Di ujung lorong, kalian melihat jejak lumpur segar menuju saluran keluar kota.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_006_sewer_side"
+    },
+    "node_005_sewer_fail": {
+      "type": "narrative",
+      "text": "Ledakan gas menghantam keras. Kalian selamat, tapi paru-paru terasa terbakar dan tubuh kalian melemah. Meski terluka, jejak para buronan masih bisa diikuti menuju pinggir kota.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_006_sewer_side"
+    },
+    "node_006_sewer_side": {
+      "type": "voting",
+      "text": "Di balik pintu maintenance yang setengah terbuka, terlihat ruang teknisi lama. Di depan, lorong utama menuju jejak pelarian masih jelas. Ambil risiko atau tetap fokus?",
+      "image": "bg_dark_forest.webp",
+      "timeout": 25000,
+      "on_timeout": "node_007_sewer_merge",
+      "options": [
+        { "id": "node_006a_tech_room", "text": "Periksa ruang teknisi" },
+        { "id": "node_007_sewer_merge", "text": "Ikuti lorong utama" }
+      ]
+    },
+    "node_006a_tech_room": {
+      "type": "dice_check",
+      "text": "Rak tua roboh, pipa bocor, dan lantai licin. Kalian harus bergerak cepat agar ruangan itu tidak runtuh menimpa kalian.",
+      "image": "bg_dark_forest.webp",
+      "difficulty": 12,
+      "required_ability": "dexterity",
+      "on_success": "node_006b_tech_win",
+      "on_fail": "node_006c_tech_fail"
+    },
+    "node_006b_tech_win": {
+      "type": "narrative",
+      "text": "Di antara puing teknisi lama, kalian menemukan botol eksperimen yang masih utuh. Cairan di dalamnya berpendar seperti bara. Ini bisa menjadi keuntungan saat pertarungan berikutnya.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_007_sewer_merge"
+    },
+    "node_006c_tech_fail": {
+      "type": "narrative",
+      "text": "Rak ambruk dan memaksa kalian mundur cepat. Tidak ada item yang berhasil diselamatkan, tapi kalian masih sempat kembali ke jejak utama buronan.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_007_sewer_merge"
+    },
+    "node_007_sewer_merge": {
+      "type": "narrative",
+      "text": "Saluran batu itu berakhir di luar tembok kota. Di tanah basah, jejak puluhan kaki mengarah ke kabut Hutan Kelam.",
+      "image": "bg_dark_forest_edge.webp",
+      "auto_advance": 7000,
+      "next": "node_020_forest_entry"
+    },
+
+    "node_003_rooftop_path": {
+      "type": "narrative",
+      "text": "Kalian memanjat sisi kedai dan bergerak dari atap ke atap. Dari ketinggian, Valdris tampak seperti lautan cahaya yang rusak oleh kerusuhan dan kobaran api sporadis.",
+      "image": "bg_city_dawn.webp",
+      "auto_advance": 7000,
+      "next": "node_004_rooftop_balance"
+    },
+    "node_004_rooftop_balance": {
+      "type": "dice_check",
+      "text": "Genteng tua di bawah kaki kalian licin dan rapuh. Sedikit salah langkah berarti jatuh ke gang sempit di bawah.",
+      "image": "bg_city_dawn.webp",
+      "difficulty": 12,
+      "required_ability": "dexterity",
+      "on_success": "node_005_rooftop_win",
+      "on_fail": "node_005_rooftop_fail"
+    },
+    "node_005_rooftop_win": {
+      "type": "narrative",
+      "text": "Kalian menjaga keseimbangan dengan baik. Dari puncak atap pasar, kalian melihat rombongan tahanan dipimpin sosok berjubah putih kusam yang bergerak menuju tepi hutan.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_006_rooftop_side"
+    },
+    "node_005_rooftop_fail": {
+      "type": "narrative",
+      "text": "Salah satu dari kalian tergelincir dan jatuh menembus tumpukan peti. Kalian selamat, tapi kehilangan momentum dan jejak visual. Namun arah pelarian masih terbaca menuju Hutan Kelam.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_006_rooftop_side"
+    },
+    "node_006_rooftop_side": {
+      "type": "voting",
+      "text": "Di puncak rumah seorang pemanah mati dengan senjata masih tertancap di punggungnya. Kalian juga melihat jalur cepat turun menuju jalan utama. Apa yang dilakukan?",
+      "image": "bg_city_dawn.webp",
+      "timeout": 25000,
+      "on_timeout": "node_007_rooftop_merge",
+      "options": [
+        { "id": "node_006a_archer_loot", "text": "Ambil senjata dan peralatan pemanah" },
+        { "id": "node_007_rooftop_merge", "text": "Turun dan lanjut mengejar" }
+      ]
+    },
+    "node_006a_archer_loot": {
+      "type": "dice_check",
+      "text": "Waktu sempit. Kalian harus mengambil perlengkapan itu sebelum struktur atap runtuh oleh api di bawah.",
+      "image": "bg_city_dawn.webp",
+      "difficulty": 11,
+      "required_ability": "dexterity",
+      "on_success": "node_006b_archer_win",
+      "on_fail": "node_006c_archer_fail"
+    },
+    "node_006b_archer_win": {
+      "type": "narrative",
+      "text": "Kalian berhasil mengamankan bilah pendek bergerigi dari sabuk sang pemanah. Senjata itu tampak ringan tapi mematikan. Setelah itu, kalian melompat turun dan terus mengejar jejak pelarian.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_007_rooftop_merge"
+    },
+    "node_006c_archer_fail": {
+      "type": "narrative",
+      "text": "Atap retak dan memaksa kalian mundur sebelum sempat mengambil perlengkapan. Tidak ada waktu lagi. Kalian segera turun dan menuju hutan.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_007_rooftop_merge"
+    },
+    "node_007_rooftop_merge": {
+      "type": "narrative",
+      "text": "Saat kalian meninggalkan atap terakhir, bayangan para pelarian sudah hampir lenyap di balik garis pepohonan. Hutan Kelam menanti di depan.",
+      "image": "bg_dark_forest_edge.webp",
+      "auto_advance": 7000,
+      "next": "node_020_forest_entry"
+    },
+
+    "node_020_forest_entry": {
+      "type": "voting",
+      "text": "Kabut Hutan Kelam menelan suara dan jejak. Kalian harus menentukan cara memburu para buronan sebelum jejak hilang sepenuhnya.",
+      "image": "bg_dark_forest_edge.webp",
+      "timeout": 30000,
+      "on_timeout": "node_021_track_footprints",
+      "options": [
+        { "id": "node_021_track_footprints", "text": "Lacak jejak kaki di lumpur dan ranting patah" },
+        { "id": "node_021_track_magic", "text": "Rasakan resonansi sihir dan hawa ketakutan" },
+        { "id": "node_021_track_side_hut", "text": "Ikuti cahaya samar pondok tua di dalam hutan" }
+      ]
+    },
+
+    "node_021_track_footprints": {
+      "type": "dice_check",
+      "text": "Jejak para buronan bercampur dengan binatang liar dan akar pohon yang saling menyesatkan. Butuh konsentrasi tinggi untuk membaca pola yang benar.",
+      "image": "bg_dark_forest_edge.webp",
+      "difficulty": 13,
+      "required_ability": "intelligence",
+      "on_success": "node_030_found_path",
+      "on_fail": "node_022_lost_wolves"
+    },
+    "node_021_track_magic": {
+      "type": "dice_check",
+      "text": "Kalian memejamkan mata dan merasakan udara malam. Aura pelarian dan relik sihir itu masih tertinggal, tapi hutan dipenuhi gema tua yang menyesatkan.",
+      "image": "bg_dark_forest_edge.webp",
+      "difficulty": 14,
+      "required_ability": "wisdom",
+      "on_success": "node_030_found_path",
+      "on_fail": "node_022_lost_wolves"
+    },
+    "node_021_track_side_hut": {
+      "type": "narrative",
+      "text": "Di antara pepohonan, sebuah pondok reyot berdiri sendirian dengan lentera redup di jendelanya. Seseorang — atau sesuatu — mungkin tahu lebih banyak tentang hutan ini daripada kalian.",
+      "image": "bg_dark_forest.webp",
+      "auto_advance": 7000,
+      "next": "node_023_hermit_choice"
+    },
+    "node_023_hermit_choice": {
+      "type": "voting",
+      "text": "Seorang pertapa tua muncul dari balik pintu sambil membawa tombak kayu. Matanya tajam, tapi tidak langsung bermusuhan. Apa sikap kalian?",
+      "image": "bg_dark_forest.webp",
+      "timeout": 25000,
+      "on_timeout": "node_024_help_hermit",
+      "options": [
+        { "id": "node_024_help_hermit", "text": "Percaya dan bantu pertapa itu" },
+        { "id": "node_024_threaten_hermit", "text": "Tekan dia agar bicara cepat" }
+      ]
+    },
+    "node_024_help_hermit": {
+      "type": "dice_check",
+      "text": "Pertapa itu meminta bantuan mengusir beast kecil yang mengelilingi pondoknya sebelum ia memberi petunjuk.",
+      "image": "bg_battle.webp",
+      "difficulty": 12,
+      "required_ability": "strength",
+      "on_success": "node_025_hermit_reward",
+      "on_fail": "node_025_hermit_partial"
+    },
+    "node_024_threaten_hermit": {
+      "type": "dice_check",
+      "text": "Tatapan pertapa itu dingin. Jika kalian salah menilai, kalian hanya akan mendapat kebohongan.",
+      "image": "bg_negotiation.webp",
+      "difficulty": 13,
+      "required_ability": "charisma",
+      "on_success": "node_025_hermit_partial",
+      "on_fail": "node_022_lost_wolves"
+    },
+    "node_025_hermit_reward": {
+      "type": "narrative",
+      "text": "Sebagai imbalan, pertapa memberi kalian botol moonwater dan menunjukkan jalur sempit yang sering dipakai pemburu. Jalur itu memotong jarak ke camp para buronan.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_030_found_path"
+    },
+    "node_025_hermit_partial": {
+      "type": "narrative",
+      "text": "Pertapa itu tidak sepenuhnya percaya pada kalian, tapi ia tetap mengarahkan kalian ke arah barat daya. Kalian kehilangan sedikit waktu, namun arah masih cukup jelas.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_030_found_path"
+    },
+
+    "node_022_lost_wolves": {
+      "type": "narrative",
+      "text": "Kabut menyesatkan kalian hingga suara langkah sendiri terasa asing. Tiba-tiba, geraman rendah mengitari kalian dari berbagai arah. Sekawanan Dire Wolf keluar dari kegelapan.",
+      "image": "bg_dark_forest.webp",
+      "auto_advance": 7000,
+      "next": "node_026_wolf_fight"
+    },
+    "node_026_wolf_fight": {
+      "type": "dice_check",
+      "text": "Serigala-serigala itu menyerang serentak. Kalian harus bertahan cukup lama untuk memukul mundur mereka.",
+      "image": "bg_battle.webp",
+      "difficulty": 15,
+      "required_ability": "constitution",
+      "on_success": "node_027_wolf_win",
+      "on_fail": "node_027_wolf_fail"
+    },
+    "node_027_wolf_win": {
+      "type": "narrative",
+      "text": "Kalian bertahan dan melukai alpha mereka hingga kawanan itu mundur. Dalam keheningan sesudah pertarungan, samar-samar terdengar suara manusia dan letupan api unggun tak jauh dari sini.",
+      "image": "bg_victory.webp",
+      "auto_advance": 7000,
+      "next": "node_030_found_path"
+    },
+    "node_027_wolf_fail": {
+      "type": "narrative",
+      "text": "Kalian menang dengan susah payah, tapi gigitan dan cakar serigala meninggalkan luka serius. Dalam kondisi payah, kalian masih sempat melihat cahaya api dari camp para buronan.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 7000,
+      "next": "node_030_found_path"
+    },
+
+    "node_030_found_path": {
+      "type": "narrative",
+      "text": "Akhirnya kalian menemukan camp para buronan. Dari balik semak, terlihat empat penjaga kasar, satu peti besar, dan di tengah mereka sosok berjubah pucat yang tidak mungkin salah: The Pale Hand. Sebuah relik gelap terletak di atas batu altar kecil.",
+      "image": "bg_campfire.webp",
+      "auto_advance": 8000,
+      "next": "node_031_camp_choice"
+    },
+    "node_031_camp_choice": {
+      "type": "voting",
+      "text": "Ini kesempatan terbaik kalian. Tapi satu kesalahan bisa memberi dia waktu untuk melarikan diri. Strategi party?",
+      "image": "bg_campfire.webp",
+      "timeout": 35000,
+      "on_timeout": "node_032_attack_direct",
+      "options": [
+        { "id": "node_032_attack_direct", "text": "Serang langsung sebelum mereka siap" },
+        { "id": "node_032_stealth_relic", "text": "Menyelinap dan ambil relik lebih dulu" },
+        { "id": "node_032_negotiate", "text": "Maju dan coba negosiasi" },
+        { "id": "node_032_duel_champion", "text": "Tantang champion mereka duel satu lawan satu" }
+      ]
+    },
+
+    "node_032_attack_direct": {
+      "type": "dice_check",
+      "text": "Kalian menerjang keluar dari semak. Serangan pertama harus menghancurkan formasi mereka sebelum The Pale Hand sempat membaca mantra.",
+      "image": "bg_battle.webp",
+      "difficulty": 16,
+      "required_ability": "strength",
+      "on_success": "node_040_attack_win",
+      "on_fail": "node_040_attack_fail"
+    },
+    "node_032_stealth_relic": {
+      "type": "dice_check",
+      "text": "Di bawah cahaya api, setiap gerakan bayangan bisa terlihat. Kalian harus sangat presisi untuk merebut relik tanpa memicu alarm terlalu cepat.",
+      "image": "bg_dark_forest.webp",
+      "difficulty": 15,
+      "required_ability": "dexterity",
+      "on_success": "node_041_stealth_win",
+      "on_fail": "node_041_stealth_fail"
+    },
+    "node_032_negotiate": {
+      "type": "dice_check",
+      "text": "The Pale Hand menatap kalian seakan menilai apakah kalian ancaman, alat, atau hanya korban berikutnya. Kalian harus mengendalikan percakapan sejak awal.",
+      "image": "bg_negotiation.webp",
+      "difficulty": 16,
+      "required_ability": "charisma",
+      "on_success": "node_042_negotiate_win",
+      "on_fail": "node_042_negotiate_fail"
+    },
+    "node_032_duel_champion": {
+      "type": "dice_check",
+      "text": "Salah satu champion camp melangkah maju menerima tantangan. Jika kalian menang, moral musuh akan runtuh. Jika kalah, The Pale Hand akan memanfaatkan kekacauan itu.",
+      "image": "bg_battle.webp",
+      "difficulty": 15,
+      "required_ability": "constitution",
+      "on_success": "node_043_duel_win",
+      "on_fail": "node_043_duel_fail"
+    },
+
+    "node_040_attack_win": {
+      "type": "narrative",
+      "text": "Serangan kalian brutal dan cepat. Para penjaga camp tumbang satu per satu sebelum sempat membentuk garis pertahanan. The Pale Hand terpaksa mundur dan mengangkat relik untuk kabur.",
+      "image": "bg_victory.webp",
+      "auto_advance": 8000,
+      "next": "node_050_end_tactical_win"
+    },
+    "node_040_attack_fail": {
+      "type": "narrative",
+      "text": "Camp itu ternyata lebih siap dari perkiraan. Kalian dipaksa bertarung mati-matian di antara api, akar pohon, dan bayangan. The Pale Hand memanfaatkan kekacauan untuk mundur sambil tertawa sinis.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 8000,
+      "next": "node_053_end_hard_loss"
+    },
+    "node_041_stealth_win": {
+      "type": "narrative",
+      "text": "Jari-jari kalian menyentuh relik itu sebelum siapa pun sadar. Energi gelapnya menggigil di tangan kalian. The Pale Hand menoleh terlambat — dan dengan wajah marah, ia kabur ke dalam kabut, meninggalkan anak buahnya kacau.",
+      "image": "bg_victory.webp",
+      "auto_advance": 8000,
+      "next": "node_051_end_relic_win"
+    },
+    "node_041_stealth_fail": {
+      "type": "narrative",
+      "text": "Sebuah ranting patah di saat terburuk. Semua kepala menoleh. The Pale Hand meraih relik lebih dulu dan menyemburkan ledakan sihir untuk membuka jalan kabur. Kalian nyaris berhasil, tapi masih terlalu lambat.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 8000,
+      "next": "node_053_end_hard_loss"
+    },
+    "node_042_negotiate_win": {
+      "type": "narrative",
+      "text": "Untuk sesaat, The Pale Hand menahan bawahannya. Ia memberi petunjuk samar tentang kekuatan yang lebih besar di balik semua ini, seolah ingin kalian tahu bahwa malam ini hanyalah awal. Lalu ia melempar bom asap dan menghilang.",
+      "image": "bg_negotiation.webp",
+      "auto_advance": 8000,
+      "next": "node_052_end_information_win"
+    },
+    "node_042_negotiate_fail": {
+      "type": "narrative",
+      "text": "Kata-kata kalian justru memicu ejekan. The Pale Hand tak pernah berniat bicara lama. Sihir hitam meledak dari telapak tangannya dan memecah formasi kalian cukup lama untuk kabur bersama relik.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 8000,
+      "next": "node_053_end_hard_loss"
+    },
+    "node_043_duel_win": {
+      "type": "narrative",
+      "text": "Champion itu tumbang di depan semua orang. Camp musuh goyah. Dalam kekacauan singkat itu, The Pale Hand memilih kabur daripada bertarung terbuka, meninggalkan sebuah pecahan kunci dan banyak pertanyaan.",
+      "image": "bg_victory.webp",
+      "auto_advance": 8000,
+      "next": "node_054_end_duel_win"
+    },
+    "node_043_duel_fail": {
+      "type": "narrative",
+      "text": "Kalian kalah tipis di duel itu. Sorak camp musuh menggema, dan The Pale Hand menggunakan momen tersebut untuk mundur teratur bersama seluruh pengikut terdekatnya.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 8000,
+      "next": "node_053_end_hard_loss"
+    },
+
+    "node_050_end_tactical_win": {
+      "type": "effect",
+      "text": "[CHAPTER 1 SELESAI] Kalian menang secara taktis. Meski The Pale Hand lolos, camp dan ritmenya hancur. Kalian kini tahu bahwa pelarian ini terhubung pada sesuatu yang lebih besar di utara.",
+      "image": "bg_city_dawn.webp",
+      "auto_advance": 10000,
+      "next": "node_050_end_tactical_win"
+    },
+    "node_051_end_relic_win": {
+      "type": "effect",
+      "text": "[CHAPTER 1 SELESAI] Kalian berhasil merebut relik dari camp musuh. The Pale Hand melarikan diri, tapi kini ia kehilangan salah satu sumber kekuatannya. Jalur kalian menuju rahasia berikutnya semakin jelas.",
+      "image": "bg_city_dawn.webp",
+      "auto_advance": 10000,
+      "next": "node_051_end_relic_win"
+    },
+    "node_052_end_information_win": {
+      "type": "effect",
+      "text": "[CHAPTER 1 SELESAI] Kalian gagal menangkap The Pale Hand, tetapi mendapat informasi berharga tentang ritual dan tempat bernama Xal'thor. Ini bukan akhir pengejaran, melainkan awal konspirasi yang jauh lebih besar.",
+      "image": "bg_city_dawn.webp",
+      "auto_advance": 10000,
+      "next": "node_052_end_information_win"
+    },
+    "node_053_end_hard_loss": {
+      "type": "effect",
+      "text": "[CHAPTER 1 SELESAI] Malam ini menjadi kemenangan untuk The Pale Hand. Namun kalian masih hidup, dan sekarang tahu arah pelariannya. Kekalahan ini akan menjadi bahan bakar bagi perburuan berikutnya.",
+      "image": "bg_retreat.webp",
+      "auto_advance": 10000,
+      "next": "node_053_end_hard_loss"
+    },
+    "node_054_end_duel_win": {
+      "type": "effect",
+      "text": "[CHAPTER 1 SELESAI] Kemenangan duel mengoyak moral para pengikut The Pale Hand. Di antara abu camp, kalian menemukan pecahan kunci aneh yang tampaknya berasal dari tempat yang belum pernah kalian lihat. Bab berikutnya menanti.",
+      "image": "bg_victory.webp",
+      "auto_advance": 10000,
+      "next": "node_054_end_duel_win"
+    }
+  }
+}

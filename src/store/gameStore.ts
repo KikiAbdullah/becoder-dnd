@@ -74,11 +74,12 @@ export const useGameStore = create<GameState>((set) => ({
     currentNode: data.state?.current_node ?? state.currentNode,
     phase: data.state?.phase ?? state.phase,
     players: data.players ?? state.players,
-    votes: data.votes ?? state.votes,
+    // Jika data.votes null/undefined dari Firebase, kita harus mengosongkannya ({} atau null)
+    votes: data.votes || {}, 
     diceResults: data.dice ? Object.entries(data.dice).reduce((acc, [id, val]) => ({
       ...acc,
       [id]: { value: val.value, timestamp: val.timestamp }
-    }), {}) : state.diceResults
+    }), {}) : {}
   })),
   
   setLoading: (loading) => set({ isLoading: loading }),

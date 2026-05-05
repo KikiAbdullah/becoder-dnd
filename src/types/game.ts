@@ -10,7 +10,7 @@ export interface PlayerData {
   class: CharacterId;
   hp: number;
   maxHp: number;
-  status: 'active' | 'downed' | 'dead';
+  status: 'active' | 'downed' | 'dead' | 'afk';
   lastRoll?: number;
   abilityScores: AbilityScores;
   modifiers: Modifiers;
